@@ -64,7 +64,9 @@ final class ProjectManagerViewController: UIViewController {
         let addProjectButton = UIBarButtonItem(barButtonSystemItem: .add,
                                                target: self,
                                                action: #selector(addProject))
+        let historyButton = UIBarButtonItem(title: "History", style: .plain, target: self, action: #selector(showHistory))
         navigationItem.rightBarButtonItem = addProjectButton
+        navigationItem.leftBarButtonItem = historyButton
         
         todoTableView.dataSource = self
         doingTableView.dataSource = self
@@ -89,6 +91,11 @@ final class ProjectManagerViewController: UIViewController {
         navigationController.modalPresentationStyle = UIModalPresentationStyle.formSheet
         
         present(navigationController, animated: true, completion: nil)
+    }
+    
+    @objc
+    private func showHistory() {
+        print("show history")
     }
     
     private func configureSubview() {
