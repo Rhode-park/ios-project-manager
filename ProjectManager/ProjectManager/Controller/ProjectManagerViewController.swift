@@ -64,7 +64,13 @@ final class ProjectManagerViewController: UIViewController {
         let addProjectButton = UIBarButtonItem(barButtonSystemItem: .add,
                                                target: self,
                                                action: #selector(addProject))
-        let historyButton = UIBarButtonItem(title: "History", style: .plain, target: self, action: #selector(showHistory))
+        let customView = UIButton()
+        customView.setTitle("History", for: .normal)
+        customView.setTitleColor(.systemBlue, for: .normal)
+        customView.setTitleColor(.systemGray3, for: .focused)
+        customView.addTarget(self, action: #selector(showHistory), for: .touchUpInside)
+        let historyButton = UIBarButtonItem(customView: customView)
+        
         navigationItem.rightBarButtonItem = addProjectButton
         navigationItem.leftBarButtonItem = historyButton
         
@@ -95,7 +101,19 @@ final class ProjectManagerViewController: UIViewController {
     
     @objc
     private func showHistory() {
-        print("show history")
+        let historyButton = navigationItem.leftBarButtonItem?.customView as? UIButton
+        historyButton?.setTitleColor(.systemGray2, for: .normal)
+        
+        let historyViewController = HistoryViewController()
+        historyViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+        historyViewController.preferredContentSize = CGSize(width: 300, height: 300)
+        historyViewController.popoverPresentationController?.permittedArrowDirections = [.up]
+        historyViewController.popoverPresentationController?.sourceView = navigationItem.leftBarButtonItem?.customView
+        historyViewController.dismissHandler = {
+            historyButton?.setTitleColor(.systemBlue, for: .normal)
+        }
+        
+        present(historyViewController, animated: true, completion: nil)
     }
     
     private func configureSubview() {
